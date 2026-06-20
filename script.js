@@ -106,3 +106,62 @@
   var y = document.getElementById('yr');
   if (y) y.textContent = new Date().getFullYear();
 })();
+
+// ── GALLERY LIGHTBOX ─────────────────────────────────────────────────────────
+(function(){
+  var grid = document.getElementById('galGrid');
+  if(!grid) return;
+
+  var photos  = JSON.parse(grid.dataset.photos || '[]');
+  var lb      = document.getElementById('lightbox');
+  var lbImg   = document.getElementById('lbImg');
+  var lbCnt   = document.getElementById('lbCounter');
+  var lbClose = document.getElementById('lbClose');
+  var lbPrev  = document.getElementById('lbPrev');
+  var lbNext  = document.getElementById('lbNext');
+  var current = 0;
+
+  function open(idx){
+    current = ((idx % photos.length) + photos.length) % photos.length;
+    lbImg.src = photos[current];
+    lbImg.alt = 'Photo ' + (current+1);
+    lbCnt.textContent = (current+1) + ' / ' + photos.length;
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    lbClose.focus();
+  }
+  function close(){
+    lb.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function prev(){ open(current - 1); }
+  function next(){ open(current + 1); }
+
+  // open on thumb click
+  grid.querySelectorAll('.gal-item').forEach(function(btn){
+    btn.addEventListener('click', function(){ open(+this.dataset.idx); });
+  });
+
+  lbClose.addEventListener('click', close);
+  lbPrev.addEventListener('click',  prev);
+  lbNext.addEventListener('click',  next);
+
+  // close on backdrop click
+  lb.addEventListener('click', function(e){ if(e.target===lb) close(); });
+
+  // keyboard nav
+  document.addEventListener('keydown', function(e){
+    if(!lb.classList.contains('open')) return;
+    if(e.key==='ArrowLeft'  || e.key==='ArrowUp')   { e.preventDefault(); prev(); }
+    if(e.key==='ArrowRight' || e.key==='ArrowDown')  { e.preventDefault(); next(); }
+    if(e.key==='Escape')                              { close(); }
+  });
+
+  // touch swipe
+  var tx=0;
+  lb.addEventListener('touchstart',function(e){tx=e.touches[0].clientX;},{passive:true});
+  lb.addEventListener('touchend',  function(e){
+    var dx=e.changedTouches[0].clientX - tx;
+    if(Math.abs(dx)>50){ dx<0 ? next() : prev(); }
+  },{passive:true});
+})();
