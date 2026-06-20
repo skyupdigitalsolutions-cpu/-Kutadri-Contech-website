@@ -92,8 +92,8 @@ ul{margin:0;padding:0;list-style:none}
    ============================================================ */
 .nav{position:sticky;top:0;z-index:90;background:rgba(246,242,236,.82);backdrop-filter:blur(10px);border-bottom:1px solid transparent;transition:border-color .3s,box-shadow .3s,background .3s}
 .nav.scrolled{border-color:var(--line);box-shadow:0 10px 30px -22px rgba(20,37,59,.6);background:rgba(246,242,236,.95)}
-.nav-inner{display:flex;align-items:center;justify-content:space-between;height:74px;gap:1rem}
-.brand img{height:30px;width:auto}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:88px;gap:1rem}
+.brand img{height:52px;width:auto}
 .nav-menu{display:flex;align-items:center;gap:2rem}
 .nav-menu a{font-family:"Archivo",sans-serif;font-weight:600;font-size:.96rem;color:var(--ink);position:relative;padding:.3rem 0;transition:color .2s}
 .nav-menu a:not(.nav-cta)::after{content:"";position:absolute;left:0;bottom:-2px;width:0;height:2px;background:var(--terra);transition:width .28s cubic-bezier(.2,.7,.2,1)}
